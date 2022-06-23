@@ -12,6 +12,7 @@ on:
     branches:
       - master
       - main
+      - test-ci
       - track/**
 
 jobs:
