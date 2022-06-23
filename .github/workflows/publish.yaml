@@ -3,9 +3,9 @@ name: Publish
 
 on:
   workflow_call:
-    secrets:
-      charmcraft-credentials:
-        required: true
+    # secrets:
+    #   charmcraft-credentials:
+    #     required: true
 
 jobs:
 
