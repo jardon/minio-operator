@@ -12,6 +12,7 @@ on:
     branches:
       - master
       - main
+      - test-ci
       - track/**
 
 jobs:
@@ -25,7 +26,7 @@ jobs:
   # publish runs in series with tests, and only publishes if tests passes
   publish-charm:
     name: Publish Charm
-    needs: tests
     uses: ./.github/workflows/publish.yaml
+    needs: tests
     secrets:
       charmcraft-credentials: "${{ secrets.CHARMCRAFT_CREDENTIALS }}"
