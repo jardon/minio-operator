@@ -95,3 +95,10 @@ jobs:
   #     - name: Get operator logs
   #       run: kubectl logs --tail 100 -n testing -ljuju-operator=minio
   #       if: failure()
+  prcheck:
+    if: github.actor == 'repo-owner'
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: echo actor
+        run: |
+          echo ${{github.actor}}
