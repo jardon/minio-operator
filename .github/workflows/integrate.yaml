@@ -12,7 +12,7 @@ jobs:
   lib-check:
     name: Check libraries
     runs-on: ubuntu-latest
-    if: github.actor == 'canonical'
+    if: github.actor == 'jardon'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
