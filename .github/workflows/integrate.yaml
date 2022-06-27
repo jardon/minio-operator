@@ -101,4 +101,4 @@ jobs:
     steps:
       - name: echo actor
         run: |
-          echo ${{github.repository_owner}}
+          echo ${{github.actor}}
