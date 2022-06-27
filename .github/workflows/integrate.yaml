@@ -96,7 +96,7 @@ jobs:
   #       run: kubectl logs --tail 100 -n testing -ljuju-operator=minio
   #       if: failure()
   prcheck:
-    if: github.actor == 'repo-owner'
+    # if: github.actor == 'repo-owner'
     runs-on: [ubuntu-latest]
     steps:
       - name: echo actor
