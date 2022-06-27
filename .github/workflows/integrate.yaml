@@ -9,6 +9,20 @@ on:
 
 jobs:
 
+  lib-check:
+    name: Check libraries
+    runs-on: ubuntu-latest
+    if: github.actor == 'jardon'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Check libs
+        uses: canonical/charming-actions/check-libraries@1.0.3
+        with:
+          credentials: "${{ secrets.charmcraft-credentials }}"
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
 
   lint:
     name: Lint Code
@@ -35,49 +49,56 @@ jobs:
       - name: Run unit tests
         run: tox -vve unit
 
-  integration:
-    name: Integration Test (deploy and access)
-    runs-on: ubuntu-latest
+  # integration:
+  #   name: Integration Test (deploy and access)
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Check out code
+  #       uses: actions/checkout@v2
+  #     - name: Setup operator environment
+  #       uses: charmed-kubernetes/actions-operator@main
+  #       with:
+  #         provider: microk8s
+  #         channel: 1.21/stable
+  #         charmcraft-channel: latest/candidate
+
+  #     # TODO: Remove once the actions-operator does this automatically
+  #     - name: Configure kubectl
+  #       run: |
+  #         sg microk8s -c "microk8s config > ~/.kube/config"
+
+  #     - name: Build and test
+  #       run: |
+  #         sg microk8s -c "tox -vve integration -- --model testing"
+
+  #     # On failure, capture debugging resources
+  #     - name: Get all
+  #       run: kubectl get all -A
+  #       if: failure()
+
+  #     - name: Describe deployments
+  #       run: kubectl describe deployments -A
+  #       if: failure()
+
+  #     - name: Describe replicasets
+  #       run: kubectl describe replicasets -A
+  #       if: failure()
+
+  #     - name: Get juju status
+  #       run: juju status
+  #       if: failure()
+
+  #     - name: Get application logs
+  #       run: kubectl logs --tail 100 -n testing -ljuju-app=minio
+  #       if: failure()
+
+  #     - name: Get operator logs
+  #       run: kubectl logs --tail 100 -n testing -ljuju-operator=minio
+  #       if: failure()
+  prcheck:
+    # if: github.actor == 'repo-owner'
+    runs-on: [ubuntu-latest]
     steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-      - name: Setup operator environment
-        uses: charmed-kubernetes/actions-operator@main
-        with:
-          provider: microk8s
-          channel: 1.21/stable
-          charmcraft-channel: latest/candidate
-
-      # TODO: Remove once the actions-operator does this automatically
-      - name: Configure kubectl
+      - name: echo actor
         run: |
-          sg microk8s -c "microk8s config > ~/.kube/config"
-
-      - name: Build and test
-        run: |
-          sg microk8s -c "tox -vve integration -- --model testing"
-
-      # On failure, capture debugging resources
-      - name: Get all
-        run: kubectl get all -A
-        if: failure()
-
-      - name: Describe deployments
-        run: kubectl describe deployments -A
-        if: failure()
-
-      - name: Describe replicasets
-        run: kubectl describe replicasets -A
-        if: failure()
-
-      - name: Get juju status
-        run: juju status
-        if: failure()
-
-      - name: Get application logs
-        run: kubectl logs --tail 100 -n testing -ljuju-app=minio
-        if: failure()
-
-      - name: Get operator logs
-        run: kubectl logs --tail 100 -n testing -ljuju-operator=minio
-        if: failure()
+          echo ${{github.actor}}
